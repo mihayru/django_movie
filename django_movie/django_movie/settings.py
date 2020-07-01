@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles', #подсистема для управления статическим содержимым сайта
 ]
 
+#Список подключенных промежуточных слоев
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -57,6 +58,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+#Указывает на пайтон модуль который содержит корневые шаблоны URL в приложении
 ROOT_URLCONF = 'django_movie.urls'
 
 TEMPLATES = [
@@ -80,6 +82,8 @@ WSGI_APPLICATION = 'django_movie.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
+
+#Представляет собой словарь настройки для всех баз данных проекта, всегда должна быть указана хотябы одна база данных.
 
 DATABASES = {
     'default': {
@@ -111,6 +115,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
 
+#Определяет код языка по умолчанию для джанго-сайта
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
@@ -119,6 +124,7 @@ USE_I18N = True
 
 USE_L10N = True
 
+#Указывает на необходимость поддержки временных зон 
 USE_TZ = True
 
 
