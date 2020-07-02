@@ -45,6 +45,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions', #подсистема сессий
     'django.contrib.messages', #подсистема сообщений
     'django.contrib.staticfiles', #подсистема для управления статическим содержимым сайта
+
+
+    'movies'
 ]
 
 #Список подключенных промежуточных слоев
