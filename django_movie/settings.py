@@ -9,13 +9,11 @@ https://docs.djangoproject.com/en/3.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.0/ref/settings/
 """
-#Файл со всеми настройками проекта
+# Файл со всеми настройками проекта
 import os
 
-
-#Построенние пути к корню нашего проекта
+# Построенние пути к корню нашего проекта
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
@@ -25,30 +23,29 @@ SECRET_KEY = 'duxm4&m#2rf^%*i$v5e9dapuks!jf3l@-d1p20k_e0el-hi=bg'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 
-#Булевое значение которое включает и отключает режимы отладки проекта,если оно равно True 
-#Django будет отображать подробные страницы с ошибками при выбрасовании исключений в приложении
-#Когда будем розворачивать приложение на боевом сервере нужно установить на FALSE
+# Булевое значение которое включает и отключает режимы отладки проекта,если оно равно True
+# Django будет отображать подробные страницы с ошибками при выбрасовании исключений в приложении
+# Когда будем розворачивать приложение на боевом сервере нужно установить на FALSE
 DEBUG = True
 
-#НЕ используеться при включенной отладке и запуске тестов, но как только мы разварачиваем приложение и устанавливаем флаг DEBUG=FALSE
-#необходимо добавить домен сайта в эту настройку для того чтоыб DJANGO мог с ним работать.
+# НЕ используеться при включенной отладке и запуске тестов, но как только мы разварачиваем приложение и устанавливаем флаг DEBUG=FALSE
+# необходимо добавить домен сайта в эту настройку для того чтоыб DJANGO мог с ним работать.
 
 ALLOWED_HOSTS = []
 
-
 # Application definition
-#Настройка которую мы будем изменять во всех наших проектах она указывает DJANGO какие приложение активны в нашем проекте
+# Настройка которую мы будем изменять во всех наших проектах она указывает DJANGO какие приложение активны в нашем проекте
 INSTALLED_APPS = [
-    'django.contrib.admin', #сайт администирования
-    'django.contrib.auth', #подсистема аунтифекации
-    'django.contrib.contenttypes', #подсистема для работы с типами обьектов
-    'django.contrib.sessions', #подсистема сессий
-    'django.contrib.messages', #подсистема сообщений
-    'django.contrib.staticfiles', #подсистема для управления статическим содержимым сайта
+    'django.contrib.admin',  # сайт администирования
+    'django.contrib.auth',  # подсистема аунтифекации
+    'django.contrib.contenttypes',  # подсистема для работы с типами обьектов
+    'django.contrib.sessions',  # подсистема сессий
+    'django.contrib.messages',  # подсистема сообщений
+    'django.contrib.staticfiles',  # подсистема для управления статическим содержимым сайта
     'movies',
 ]
 
-#Список подключенных промежуточных слоев
+# Список подключенных промежуточных слоев
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -59,13 +56,13 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-#Указывает на пайтон модуль который содержит корневые шаблоны URL в приложении
+# Указывает на пайтон модуль который содержит корневые шаблоны URL в приложении
 ROOT_URLCONF = 'django_movie.urls'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS':[os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -80,11 +77,10 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'django_movie.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-#Представляет собой словарь настройки для всех баз данных проекта, всегда должна быть указана хотябы одна база данных.
+# Представляет собой словарь настройки для всех баз данных проекта, всегда должна быть указана хотябы одна база данных.
 
 DATABASES = {
     'default': {
@@ -92,7 +88,6 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
@@ -112,12 +107,11 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
 
-#Определяет код языка по умолчанию для джанго-сайта
-LANGUAGE_CODE = 'en-us'
+# Определяет код языка по умолчанию для джанго-сайта
+LANGUAGE_CODE = 'ru'
 
 TIME_ZONE = 'UTC'
 
@@ -125,11 +119,15 @@ USE_I18N = True
 
 USE_L10N = True
 
-#Указывает на необходимость поддержки временных зон 
+# Указывает на необходимость поддержки временных зон
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_DIR = os.path.join(BASE_DIR, "static ")
+STATICFILES_DIR = [STATIC_DIR]
+MEDIA_URL = '/media/'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
