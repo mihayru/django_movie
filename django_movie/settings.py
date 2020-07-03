@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',  # подсистема сессий
     'django.contrib.messages',  # подсистема сообщений
     'django.contrib.staticfiles',  # подсистема для управления статическим содержимым сайта
+
     'movies',
 ]
 
@@ -127,7 +128,9 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_DIR = os.path.join(BASE_DIR, "static ")
-STATICFILES_DIR = [STATIC_DIR]
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static"),
+]
 MEDIA_URL = '/media/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")

@@ -17,7 +17,7 @@ class Category(models.Model):
         verbose_name = "Категория"
         verbose_name_plural = "Категории"
 
-
+    
 class Actor(models.Model):
     """Актеры и режиссеры"""
     name = models.CharField("Имя", max_length=100)

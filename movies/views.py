@@ -11,8 +11,15 @@ from .models import Movie
 
 class MoviesView(View):
     # Список фильмов
-    #Создаем метод get который будед принимать GET запросы HTTP
-    #Он принимает request - это вся информация присланная от нашего клиента(от браузера)
+    # Создаем метод get который будед принимать GET запросы HTTP
+    # Он принимает request - это вся информация присланная от нашего клиента(от браузера)
     def get(self, request):
         movies = Movie.objects.all()
         return render(request, 'movies/movies.html', {"movie_list": movies})
+
+
+class MovieDetailView(View):
+    # Полное описание фильма
+    def get(self, request, slug):
+        movie = Movie.objects.get(url=slug)
+        return render(request, "movies/movie_detail.html", {"movie": movie})
