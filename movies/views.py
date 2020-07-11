@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 # Create your views here.
 # Логика нашего приложения
@@ -6,6 +6,7 @@ from django.shortcuts import render
 # Этими ответами может быть html или направление или ошибка 404
 from django.views.generic import ListView, DetailView
 from django.views.generic.base import View
+from .forms import ReviewForm
 
 from .models import Movie
 
@@ -23,3 +24,15 @@ class MovieDetailView(DetailView):
     # Полное описание фильма
     model = Movie
     slug_field = "url"
+
+
+class AddReview(View):
+    """Отзывы"""
+    def post(self,request,pk):
+        form = ReviewForm(request.POST)
+        movie = Movie.objects.get(id=pk)
+        if form.is_valid():
+            form = form.save(commit=False)
+            form.movie_id = movie
+            form.save()
+        return redirect(movie.get_absolute_url())
