@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 
 # Create your views here.
 # Логика нашего приложения
@@ -20,6 +20,12 @@ class MoviesView(ListView):
 
 
 class MovieDetailView(DetailView):
-    # Полное описание фильма
+    # Полное описание фильмаA  
     model = Movie
     slug_field = "url"
+
+
+class AddReview(View):
+    """Отзывы"""
+    def post(self,request,pk):
+        return redirect("/")

@@ -19,7 +19,11 @@ body a {
 a:hover {
     text-decoration: none;
 }
-
+.img-movie-shots {
+    max-width: 250px;
+    height: auto;
+  }
+  
 input[type="button"],
 input[type="submit"],
 input[type="text"],

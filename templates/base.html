@@ -1,4 +1,6 @@
-<!DOCTYPE html> {% load static%}
+{% load static%}
+
+<!DOCTYPE html> 
 <html lang="ru">
 
 <head>
@@ -28,12 +30,12 @@
         {%include 'include/header.html'%}
     </div>
 <!---->
-<ol class="breadcrumb editContent">
+{% comment %} <ol class="breadcrumb editContent">
     <li class="breadcrumb-item">
         <a href="index.html" class="editContent">Home</a>
     </li>
     <li class="breadcrumb-item active editContent">Single Page</li>
-</ol>
+</ol> {% endcomment %}
 <!---->
             {% block content%}
             {%endblock content%}
