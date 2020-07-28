@@ -1,4 +1,6 @@
 from django.contrib import admin
+from django.utils.safestring import mark_safe
+
 from .models import Category, Genre, Movie, MovieShots, Actor, RatingStar, Rating, Reviews
 
 
@@ -23,12 +25,27 @@ class ReviewInLine(admin.TabularInline):
     extra = 1
     readonly_fields = ('name','email')
     
+    
+    
+#Делаем чтобы в админке фильмов отображались кадры фильмов
+class MovieShotsInline(admin.TabularInline):
+    model = MovieShots
+    extra = 1
+    #Должно быть кортежем или списком поэтому в конец добавляем кому
+    readonly_fields = ("get_image",)
+    def get_image(self,obj):
+            return mark_safe(f'<img src={obj.image.url} width="80" height="90"')
+        
+    get_image.short_description = "Изображение"
+    
 @admin.register(Movie)
 class MovieAdmin(admin.ModelAdmin):
+    """Фильмы"""
     list_display = ("title", "category", "url", "draft")
     list_filter = ("category", "year")
     search_fields = ('title',"category__name",)
-    inlines = [ReviewInLine]
+    inlines = [ReviewInLine, MovieShotsInline]
+    readonly_fields = ("get_image",)
     #Кнопки сохранения вверху
     save_on_top = True
     #Сохраняем новый екземпляр из старго фильма
@@ -41,7 +58,7 @@ class MovieAdmin(admin.ModelAdmin):
            "fields":(("title","tagline"),)
            }),
         (None,{
-           "fields":(("description","poster"),)
+           "fields":("description","poster","get_image")
            }),
         (None,{
            "fields":(("year","world_premiere","country"),)
@@ -58,6 +75,13 @@ class MovieAdmin(admin.ModelAdmin):
            "fields":(("url","draft"),)
            }),
     )
+        #Должно быть кортежем или списком поэтому в конец добавляем кому
+
+    def get_image(self,obj):
+            return mark_safe(f'<img src={obj.poster.url} width="100" height="110"')
+        
+    get_image.short_description = "Постер"
+    
 @admin.register(Reviews)
 class ReviewAdmin(admin.ModelAdmin):
     """Отзывы"""
@@ -71,19 +95,33 @@ class GenreAdmin(admin.ModelAdmin):
 
 @admin.register(MovieShots)
 class MovieShotsAdmin(admin.ModelAdmin):
-        """Кадры из фильма"""
-        list_display = ("title","movie")
+    """Кадры из фильма"""
+    list_display = ("title","movie","get_image")
+    readonly_fields = ("get_image",)
+      #Выводим кадры из фильма в админке.  
+    def get_image(self,obj):
+            return mark_safe(f'<img src={obj.image.url} width="50" height="60"')
+        
+    get_image.short_description = "Изображение"
         
 @admin.register(Rating)
 class RatingAdmin(admin.ModelAdmin):
-        """Рейтинг"""
-        list_display = ("name","ip")
+    """Рейтинг"""
+    list_display = ("movie","ip")
 
 @admin.register(Actor)
 class ActorAdmin(admin.ModelAdmin):
-        """Рейтинг"""
-        list_display = ("name","age")
+    """Актеры"""
+    list_display = ("name","age","get_image")
+    readonly_fields = ("get_image",)
+     #Выводим фото актерев из фильма в админке.  
+    def get_image(self,obj):
+            return mark_safe(f'<img src={obj.image.url} width="50" height="60"')
+        
+    get_image.short_description = "Изображение"
 
 
 admin.site.register(RatingStar)
 
+admin.site.site_title = "Django Movies"
+admin.site.site_header = "Django Movies"
