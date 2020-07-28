@@ -17,7 +17,7 @@ class MoviesView(ListView):
     # Он принимает request - это вся информация присланная от нашего клиента(от браузера)
     model = Movie
     queryset = Movie.objects.filter(draft=False)
-    #template_name =  'movies/movie_list.html'
+    # template_name =  'movies/movie_list.html'
 
 
 class MovieDetailView(DetailView):
@@ -28,11 +28,15 @@ class MovieDetailView(DetailView):
 
 class AddReview(View):
     """Отзывы"""
-    def post(self,request,pk):
+
+    def post(self, request, pk):
         form = ReviewForm(request.POST)
         movie = Movie.objects.get(id=pk)
         if form.is_valid():
+            # Говорим о том что хотим приостановить сохранение нашей формы
             form = form.save(commit=False)
+            if request.POST.get("parent", None):
+                form.parent_id = int(request.POST.get("parent"))
             form.movie_id = movie
             form.save()
         return redirect(movie.get_absolute_url())
