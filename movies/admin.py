@@ -1,8 +1,10 @@
+from django import forms
 from django.contrib import admin
 from django.utils.safestring import mark_safe
 
-from . import forms
-from .models import Category, Genre, Movie, MovieShots, Actor, RatingStar, Rating, Reviews
+from .models import Category, Genre, Movie, MovieShots, Actor, Rating, RatingStar, Reviews
+
+from ckeditor_uploader.widgets import CKEditorUploadingWidget
 
 
 # Register your models here.
@@ -11,11 +13,20 @@ from .models import Category, Genre, Movie, MovieShots, Actor, RatingStar, Ratin
 # В данном файле мы будем писать класы с помощью которых будет конфигурировать нашу административную панель
 
 
+class MovieAdminForm(forms.ModelForm):
+    description = forms.CharField(label="Описание", widget=CKEditorUploadingWidget())
+
+    class Meta:
+        model = Movie
+        fields = '__all__'
+
+
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
     """Категории"""
     list_display = ("id", "name", "url")
     list_display_links = ("name",)
+
 
 # Для того чтобы мы видели все записи которые прикрепленны к данному фильму - Отображаеться в админке к каждому отдельному фильму
 
@@ -54,6 +65,8 @@ class MovieAdmin(admin.ModelAdmin):
     save_as = True
     # Для того чтобы менять из списка в черновик
     list_editable = ("draft",)
+    actions = ["publish", "unpublish"]
+    form = MovieAdminForm
     # Групировка полей
     fieldsets = (
         (None, {
@@ -77,12 +90,42 @@ class MovieAdmin(admin.ModelAdmin):
             "fields": (("url", "draft"),)
         }),
     )
+
     # Должно быть кортежем или списком поэтому в конец добавляем кому
 
     def get_image(self, obj):
         return mark_safe(f'<img src={obj.poster.url} width="100" height="110"')
 
     get_image.short_description = "Постер"
+
+    # Пишем свои action для админки
+    """Actions"""
+    def unpublish(self, request, queryset):
+        """Снять с публикации """
+        # Обновляем наше поле драфт
+        row_update = queryset.update(draft=True)
+        # проверяем мы обновили одну запись или несколько в зависимости от этого выстраиваем нужное нам сообщеие
+        if row_update == 1:
+            message_bit = '1 запись была обновлена'
+        else:
+            message_bit = f'{row_update} записей было обновлено'
+        self.message_user(request, f'{message_bit}')
+
+    def publish(self, request, queryset):
+        """Опубликовать"""
+        row_update = queryset.update(draft=False)
+        if row_update == 1:
+            message_bit = '1 запись была обновлена'
+        else:
+            message_bit = f'{row_update} записей было обновлено'
+        self.message_user(request, f'{message_bit}')
+
+    publish.short_description = "Опубликовать"
+    # чтобы применять данный екшн у пользователя должны быть права
+    publish.allowed_permissions = ('change',)
+
+    unpublish.short_description = "Снять с публикации"
+    unpublish.allowed_permissions = ('change',)
 
 
 @admin.register(Reviews)
@@ -103,6 +146,7 @@ class MovieShotsAdmin(admin.ModelAdmin):
     """Кадры из фильма"""
     list_display = ("title", "movie", "get_image")
     readonly_fields = ("get_image",)
+
     # Выводим кадры из фильма в админке.
 
     def get_image(self, obj):
@@ -122,6 +166,7 @@ class ActorAdmin(admin.ModelAdmin):
     """Актеры"""
     list_display = ("name", "age", "get_image")
     readonly_fields = ("get_image",)
+
     # Выводим фото актерев из фильма в админке.
 
     def get_image(self, obj):
