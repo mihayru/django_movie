@@ -42,6 +42,7 @@ class MovieDetailView(DetailView):
         context["categories"] = Category.objects.all()
         return context
 
+
 class AddReview(View):
     """Отзывы"""
 
