@@ -43,9 +43,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',  # подсистема сообщений
     'django.contrib.staticfiles',  # подсистема для управления статическим содержимым сайта
 
-    'movies',
     'ckeditor',
     'ckeditor_uploader',
+    'movies',
 ]
 
 # Список подключенных промежуточных слоев
@@ -73,7 +73,11 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+
             ],
+            'builtins':[
+                'movies.templatetags.movie_tag'
+            ]
         },
     },
 ]
@@ -129,7 +133,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_DIR = os.path.join(BASE_DIR, "static ")
+STATIC_DIR = os.path.join(BASE_DIR, "static")
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
@@ -139,7 +143,6 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 CKEDITOR_UPLOAD_PATH = "uploads/"
-
 
 CKEDITOR_CONFIGS = {
     'default': {
